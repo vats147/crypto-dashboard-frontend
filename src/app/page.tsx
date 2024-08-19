@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react';
 import StockCard from '@/components/StockCard';
 import { Row, Col } from 'antd';
 import { Table } from "antd";
+import { parse } from "node-html-parser";
+import axios from 'axios';
+
+let baseurl='http://localhost:3001';
 
 interface StockData {
   symbol: string;
@@ -19,11 +23,46 @@ interface bondsData{
   yield: string;
   change: string;
 }
+interface crudeData{
+  logo: string;
+  change: string;
+  last_price : string;
+  last_time : string;
+  change_percent: string;
+  symbol:string;
+}
+
+interface ReturnObj {
+  logo: string;
+  change: number;
+  last_price: number;
+  last_time: string;
+  change_percent: number;
+}
+
+interface Data {
+  blend: {
+    flag: string;
+    last_price_timestamp: number;
+  };
+  change: number;
+  last_price: number;
+  change_percent: number;
+}
+
+interface rateData{
+  informalbuyValue:string;
+  informalsellValue:string;
+  officialbuyValue:string;
+  officialsellValue:string;
+}
 
 const HomePage: React.FC = () => {
   const [stocks, setStocks] = useState<StockData[]>([]);
   const [bonds, setBonds] = useState<bondsData[]>([]);
-  const columns = [
+  const [crude, setCrude] = useState<crudeData[]>([]);
+  const [rate, setRate] =  useState<rateData[]>([]);
+  const bondcolumns = [
     {
       title: 'SYMBOL',
       dataIndex: 'shortName',
@@ -46,8 +85,84 @@ const HomePage: React.FC = () => {
      
     },
   ];
+  const crudeColumns = [
+    {
+      title: 'Futures & Indexes',
+      dataIndex: 'symbol',
+      key: 'symbol',
+    },
+    {
+      title: 'Last',
+      dataIndex: 'last_price',
+      key: 'last_price',
+    },
+    {
+      title: 'Change',
+      dataIndex: 'change',
+      key: 'change', 
+      render: (text: number) => (
+        <span style={{ color: text < 0 ? 'red' : 'green' }}>
+          {text}
+        </span>
+      ),
+     
+    },
+    {
+      title: '% Change',
+      dataIndex: 'change_percent',
+      key: 'change_percent', 
+      render: (text: number) => (
+        <span style={{ color: text < 0 ? 'red' : 'green' }}>
+          {text}
+        </span>
+      ),
+     
+    },
+    {
+      title: 'Last Updated',
+      dataIndex: 'last_time',
+      key: 'last_time', 
+      render: (text: number) => (
+        <p style={{ color: text < 0 ? 'red' : 'green' }}>
+          {text}
+        </p>
+      ),
+     
+    },
+  ];
 
-  const filteredData =  [ "BTC", "ICX" , "ETH", "BALN",  ] ;
+  const filteredData =  [ "BTC", "ICX" , "ETH", "BALN",  ];
+  const returnArray: ReturnObj[] = [];
+
+  function processData(data: Data): void {
+    let returnobj: ReturnObj = {
+      logo: `https://d1o9e4un86hhpc.cloudfront.net/a/img/oilprices/${data.blend.flag}`,
+      change: data.change,
+      last_price: data.last_price,
+      last_time: timeAgo(data.blend.last_price_timestamp),
+      change_percent: data.change_percent,
+    };
+  
+    returnArray.push(returnobj);
+  }
+  function timeAgo(timestamp: number): string {
+    const now = new Date();
+    const timeDifference = Math.floor(now.getTime() / 1000 - timestamp); // in seconds
+  
+    const minutes = Math.floor(timeDifference / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+  
+    if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `Just now`;
+    }
+  }
 
   useEffect(() => {
 
@@ -94,14 +209,38 @@ const HomePage: React.FC = () => {
       return returnArray;
     }
 
+    const fetchCrudeData = async()  =>{
+      let data = await fetch(`${baseurl}/api/crude`);
+      let response = await data.json();
+      
+          
+        return response;
+
+    }
+
+    const fetchRateData = async () : Promise<rateData[]> =>{
+        let data = await fetch(`${baseurl}/api/rates`);
+        let response = await data.json();
+        
+          
+        return response;
+    }
+
+
+
+      
+
     const fetchData = async () => {
       try {
         const tokenData = await fetchTokenData();
         const bondsData = await fetchBondsData();
-
+        const rateData = await fetchRateData();
+        const oilData = await fetchCrudeData();
 
         setStocks(tokenData);
         setBonds(bondsData);
+        setRate(rateData);
+        setCrude(oilData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -135,7 +274,10 @@ const HomePage: React.FC = () => {
     <div  style={{ padding: '20px' }}>
       <Row gutter={[16, 16]}>
         <Col  xs={24} sm={12} md={8} lg={6} xl={6}>
-          <Table  dataSource={bonds} columns={columns} />
+          <Table  dataSource={bonds} columns={bondcolumns} />
+        </Col>
+        <Col  xs={24} sm={12} md={8} lg={4} xl={2}>
+          <Table  dataSource={crude} columns={crudeColumns} />
         </Col>
       </Row>
     </div>

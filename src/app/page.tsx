@@ -6,7 +6,8 @@ import { Row, Col } from 'antd';
 import { Table } from "antd";
 import { parse } from "node-html-parser";
 import axios from 'axios';
-
+import SellBuyCard from '@/components/card';
+import Column from 'antd/es/table/Column';
 let baseurl='http://localhost:3001';
 
 interface StockData {
@@ -276,7 +277,17 @@ const HomePage: React.FC = () => {
         <Col  xs={24} sm={12} md={8} lg={6} xl={6}>
           <Table  dataSource={bonds} columns={bondcolumns} />
         </Col>
-        <Col  xs={24} sm={12} md={8} lg={4} xl={2}>
+        <Col xs={24} sm={12} md={8} lg={6} xl={6} >
+       
+        
+       
+          <SellBuyCard title="Informal Buy" currentValue={rate.informalbuyValue} />
+          <SellBuyCard title="Informal Sell" currentValue={rate?.informalsellValue} />
+          <SellBuyCard title="Official Buy" currentValue={rate.officialbuyValue} />
+          <SellBuyCard title="Official Sell" currentValue={rate.officialsellValue} />
+        </Col>
+
+        <Col  xs={24} sm={12} md={8} lg={6} xl={6}>
           <Table  dataSource={crude} columns={crudeColumns} />
         </Col>
       </Row>

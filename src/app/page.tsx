@@ -121,18 +121,7 @@ const HomePage: React.FC = () => {
         </span>
       ),
      
-    },
-    {
-      title: 'Last Updated',
-      dataIndex: 'last_time',
-      key: 'last_time', 
-      render: (text: number) => (
-        <p style={{ color: text < 0 ? 'red' : 'green' }}>
-          {text}
-        </p>
-      ),
-     
-    },
+    }
   ];
 
   const filteredData =  [ "BTC", "ICX" , "ETH", "BALN",  ];

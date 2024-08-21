@@ -63,6 +63,9 @@ const HomePage: React.FC = () => {
   const [bonds, setBonds] = useState<bondsData[]>([]);
   const [crude, setCrude] = useState<crudeData[]>([]);
   const [rate, setRate] =  useState<rateData[]>([]);
+  const [argBonds, setArgBonds] = useState<bondsData[]>([]);
+  const [dlBonds, setDlBonds] = useState<bondsData[]>([]);
+
   const bondcolumns = [
     {
       title: 'SYMBOL',
@@ -227,6 +230,24 @@ const HomePage: React.FC = () => {
         return response;
     }
 
+    const fetchArgBondsData = async (): Promise<bondsData[]> =>{
+      let data = await fetch(`${baseurl}/api/argentina-bond-2020`);
+      let response = await data.json();
+      console.log("fetch arg data",response)
+      return response;
+
+    }
+
+    const fetchDlBondsData = async (): Promise<bondsData[]> =>{
+      let data = await fetch(`${baseurl}/api/dl-bonds`);
+      let response = await data.json();
+
+      return response;
+
+    }
+
+
+
 
 
       
@@ -237,11 +258,18 @@ const HomePage: React.FC = () => {
         const bondsData = await fetchBondsData();
         const rateData = await fetchRateData();
         const oilData = await fetchCrudeData();
+        const argBondsData = await fetchArgBondsData();
+        const dlBondsData = await fetchDlBondsData();
+
 
         setStocks(tokenData);
         setBonds(bondsData);
         setRate(rateData);
         setCrude(oilData);
+        setArgBonds(argBondsData);
+        setDlBonds(dlBondsData);
+        console.log("argBonds",argBonds)
+        // console.log(argBonds)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -289,6 +317,13 @@ const HomePage: React.FC = () => {
 
         <Col  xs={24} sm={12} md={8} lg={6} xl={6}>
           <Table  dataSource={crude} columns={crudeColumns} />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={6} xl={6} >
+       
+        
+       
+          <SellBuyCard title={argBonds.title} currentValue={argBonds.value} />
+          <SellBuyCard title={dlBonds.title} currentValue={dlBonds.value} />
         </Col>
       </Row>
     </div>

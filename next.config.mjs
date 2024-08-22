@@ -1,7 +1,7 @@
 import withLess from 'next-plugin-antd-less';
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   images: {
     remotePatterns: [

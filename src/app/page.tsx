@@ -275,7 +275,7 @@ const HomePage: React.FC = () => {
 
       const data = await response.json();
       console.log(data.FormattedQuoteResult.FormattedQuote);
-      if(data.status !==  200){
+      if(response.status !==  200){
         errorMessage("Failed to fetch Crude Oil  Data");
       }
       const returnArray = data.FormattedQuoteResult.FormattedQuote.map(

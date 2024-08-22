@@ -22,6 +22,10 @@ interface StockData {
   volume: number;
   price_24h: string;
   price: string;
+  informalbuyValue?: string;  // Add optional properties
+  informalsellValue?: string;
+  officialbuyValue?: string;
+  officialsellValue?: string;
 }
 interface bondsData {
   shortName: string;

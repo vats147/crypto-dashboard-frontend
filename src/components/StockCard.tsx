@@ -53,7 +53,7 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray' }}>Current Value</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: isPositive ? 'green' : 'red', fontWeight: 'bold' }}>
-            <h2 style={{ margin: 0, fontWeight: 'bold' }}>${currentValue}</h2>
+            <h2 style={{ margin: 0, fontWeight: 'bold' }}>${ parseInt(currentValue, 10).toLocaleString()}</h2>
           </Col>
         </Row>
       )}
@@ -77,7 +77,7 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
-            ${volume}
+            ${ parseInt(volume, 10).toLocaleString()}
           </Col>
         </Row>
       )}

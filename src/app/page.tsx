@@ -412,17 +412,18 @@ const HomePage: React.FC = () => {
               <StockCard
                 symbol={stock?.symbol}
                 logo={stock?.logo}
-                currentValue={(stock?.price ) ? stock?.price : stock?.currentValue}
+                
+                currentValue={(stock?.price ?? stock?.currentValue) ?? "N/A"}
 
                 percentageChange={stock?.percentageChange?.toString()} // Convert number to string for display
                 isPositive={stock?.isPositive}
                 volume={stock?.volume?.toString()}
                 price_24h={stock?.price_24h}
-                informalbuyValue={stock?.informalbuyValue}
-                informalsellValue={stock?.informalsellValue}
-                 
-                officialbuyValue={stock?.officialbuyValue}
-                officialsellValue={stock?.officialsellValue}
+                informalbuyValue={stock?.informalbuyValue ?? ""}
+                informalsellValue={stock?.informalsellValue ?? ""}
+                officialbuyValue={stock?.officialbuyValue ?? ""}
+                officialsellValue={stock?.officialsellValue ?? ""}
+                
               />
 
             

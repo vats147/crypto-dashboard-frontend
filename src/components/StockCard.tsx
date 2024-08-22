@@ -14,6 +14,8 @@ interface StockCardProps {
   informalsellValue: string;
   officialbuyValue: string;
   officialsellValue: string;
+  price_24h: string;
+
 }
 
 const StockCard: React.FC<StockCardProps> = ({

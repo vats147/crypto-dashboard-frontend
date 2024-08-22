@@ -11,7 +11,8 @@ import { parse } from "node-html-parser";
 import axios from "axios";
 import SellBuyCard from "@/components/card";
 import Column from "antd/es/table/Column";
-let baseurl = "http://localhost:3001";
+// let baseurl = process.env.baseurl;
+let baseurl = "https://connor-crypto-backend.vercel.app";
 
 interface StockData {
   symbol: string;

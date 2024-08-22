@@ -16,6 +16,12 @@ const nextConfig = {
         {
             protocol : "https",
             hostname: '**'
+        },
+        {
+          
+            protocol : "http",
+            hostname: '**'
+        
         }
       ],
   },
@@ -23,9 +29,7 @@ const nextConfig = {
 
 export default withLess({
   ...nextConfig,
-  lessVarsFilePath: './src/styles/variables.less', // Path to your Less variables file
-  lessVarsFilePathAppendToEndOfContent: false,
-  cssLoaderOptions: {},
+
 
   webpack(config) {
     return config;

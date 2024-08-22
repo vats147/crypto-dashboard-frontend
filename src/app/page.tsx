@@ -171,6 +171,15 @@ const HomePage: React.FC = () => {
     
   };
 
+  const errorMessage = (data :any) =>{
+    messageApi.open({
+      
+      type: 'error',
+      content: data,
+      duration: 3,
+    });
+  }
+
   useEffect(() => {
     const fetchTokenData = async (): Promise<StockData[]> => {
       const response = await fetch(
@@ -259,7 +268,9 @@ const HomePage: React.FC = () => {
 
       const data = await response.json();
       console.log(data.FormattedQuoteResult.FormattedQuote);
-
+      if(data.status !==  200){
+        errorMessage("Failed to fetch Crude Oil  Data");
+      }
       const returnArray = data.FormattedQuoteResult.FormattedQuote.map(
         (e: any) => {
           return {
@@ -276,27 +287,40 @@ const HomePage: React.FC = () => {
     const fetchCrudeData = async () => {
       let data = await fetch(`${baseurl}/api/crude`);
       let response = await data.json();
+      if(data.status !==  200){
 
+      errorMessage("Failed to fetch Crude Oil  Data");
+      }
       return response;
     };
 
     const fetchRateData = async (): Promise<rateData[]> => {
       let data = await fetch(`${baseurl}/api/rates`);
       let response = await data.json();
-
+      if(data.status !==  200){
+        errorMessage("Failed to fetch Offical and Informal Rate Data");
+      }
       return response;
     };
 
     const fetchArgBondsData = async (): Promise<bondsData[]> => {
       let data = await fetch(`${baseurl}/api/argentina-bond-2020`);
       let response = await data.json();
-      console.log("fetch arg data", response);
+      console.log("fetch arg data", data.status);
+      if(data.status !==  200){
+        errorMessage("Failed to fetch Argentina Bonds Data");
+      }
+
       return response;
     };
 
     const fetchDlBondsData = async (): Promise<bondsData[]> => {
       let data = await fetch(`${baseurl}/api/dl-bonds`);
       let response = await data.json();
+      if(data.status !==  200){
+        errorMessage("Failed to fetch dl Bonds Data");
+      }
+
 
       return response;
     };
@@ -329,14 +353,17 @@ const HomePage: React.FC = () => {
           });
           throw new Error("Data fetching failed");
         }
+        await Promise.all([
+          setStocks(tokenData),
+          setBonds(bondsData),
+          setRate(rateData),
+          setCrude(oilData),
+          setArgBonds(argBondsData),
+          setDlBonds(dlBondsData),
 
-        setStocks(tokenData);
-        setBonds(bondsData);
-        setRate(rateData);
-        setCrude(oilData);
-        setArgBonds(argBondsData);
-        setDlBonds(dlBondsData);
-        console.log("argBonds", argBonds);
+        ])
+
+        // console.log("argBonds", argBonds);
         // console.log(argBonds)
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -356,9 +383,10 @@ const HomePage: React.FC = () => {
 
   return (
     <>
+     <Spin spinning={loading}>
     {contextHolder}
       <div style={{ padding: "20px" }}>
-      {/* <Spin spinning={loading}> */}
+    
       
       
       <Space>
@@ -397,13 +425,11 @@ const HomePage: React.FC = () => {
 
 
         </Row>
-        {/* </Spin> */}
-
-      <Spin spinning={loading}>
+        
 
         <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={bonds} columns={bondcolumns} />
+            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}/>
 
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -428,16 +454,17 @@ const HomePage: React.FC = () => {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns}   pagination={false}/>
+            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}/>
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>
             <SellBuyCard title={dlBonds.title} currentValue={dlBonds.value}  percentageChange = {dlBonds.percentageChange}/>
           </Col> */}
         </Row>
-        </Spin>
+     
 
       </div>
+      </Spin>
     </>
   );
 };

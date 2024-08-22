@@ -57,32 +57,7 @@ const StockCard: React.FC<StockCardProps> = ({
           </Col>
         </Row>
       )}
-
-      {percentageChange && (
-        <Row justify="space-between" align="middle">
-          <Col span={12} style={{ textAlign: 'left' }}>
-            <p style={{ fontSize: '14px', color: 'gray' }}>Percentage</p>
-          </Col>
-          <Col span={12} style={{ textAlign: 'right', color: isPositive ? 'green' : 'red', fontWeight: 'bold' }}>
-            <h3 style={{ margin: 0, fontWeight: 'bold' }}>
-              {isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {percentageChange}%
-            </h3>
-          </Col>
-        </Row>
-      )}
-
-      {volume && (
-        <Row justify="space-between" align="middle">
-          <Col span={12} style={{ textAlign: 'left' }}>
-            <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
-          </Col>
-          <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
-          ${parseFloat(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </Col>
-        </Row>
-      )}
-
-      {informalbuyValue && (
+       {informalbuyValue && (
         <Row justify="space-between" align="middle">
           <Col span={12} style={{ textAlign: 'left' }}>
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Informal Buy</p>
@@ -125,6 +100,32 @@ const StockCard: React.FC<StockCardProps> = ({
           </Col>
         </Row>
       )}
+
+      {percentageChange && (
+        <Row justify="space-between" align="middle">
+          <Col span={12} style={{ textAlign: 'left' }}>
+            <p style={{ fontSize: '14px', color: 'gray' }}>Percentage</p>
+          </Col>
+          <Col span={12} style={{ textAlign: 'right', color: isPositive ? 'green' : 'red', fontWeight: 'bold' }}>
+            <h3 style={{ margin: 0, fontWeight: 'bold' }}>
+              {isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {percentageChange}%
+            </h3>
+          </Col>
+        </Row>
+      )}
+
+      {volume && (
+        <Row justify="space-between" align="middle">
+          <Col span={12} style={{ textAlign: 'left' }}>
+            <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
+          </Col>
+          <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
+          ${parseFloat(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </Col>
+        </Row>
+      )}
+
+     
     </Card>
   );
 };

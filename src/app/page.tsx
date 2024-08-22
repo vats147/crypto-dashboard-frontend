@@ -413,7 +413,7 @@ const HomePage: React.FC = () => {
                 symbol={stock?.symbol}
                 logo={stock?.logo}
                 
-                currentValue={(stock?.price ?? stock?.currentValue) ?? "N/A"}
+                currentValue={(stock?.price ?? stock?.currentValue) ?? ""}
 
                 percentageChange={stock?.percentageChange?.toString()} // Convert number to string for display
                 isPositive={stock?.isPositive}

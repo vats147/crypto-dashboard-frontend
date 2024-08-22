@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from "react";
 import StockCard from "@/components/StockCard";
 import { Row, Col, Spin, Table, message, Button, Space } from "antd";
+import {
+  ReloadOutlined,
+} from '@ant-design/icons';
+
 import { parse } from "node-html-parser";
 import axios from "axios";
 import SellBuyCard from "@/components/card";
@@ -57,6 +61,7 @@ interface rateData {
   officialsellValue: string;
 }
 
+
 const HomePage: React.FC = () => {
   const [stocks, setStocks] = useState<StockData[]>([]);
   const [bonds, setBonds] = useState<bondsData[]>([]);
@@ -66,7 +71,7 @@ const HomePage: React.FC = () => {
   const [dlBonds, setDlBonds] = useState<bondsData[]>([]);
   const [loading, setLoading] = useState(true); // Loading state
   const [messageApi, contextHolder] = message.useMessage();
-
+  const key = 'updatable';
   const bondcolumns = [
     {
       title: "SYMBOL",
@@ -156,6 +161,16 @@ const HomePage: React.FC = () => {
     console.log("success")
   };
 
+  const reloading = () => {
+    setLoading(true);
+    messageApi.open({
+      key,
+      type: 'loading',
+      content: 'Your data is loading...',
+    });
+    
+  };
+
   useEffect(() => {
     const fetchTokenData = async (): Promise<StockData[]> => {
       const response = await fetch(
@@ -199,7 +214,7 @@ const HomePage: React.FC = () => {
             informalbuyValue: temp.informalbuyValue,
             informalsellValue: temp.informalsellValue,
             isPositive: temp.informalbuyValue > 0,
-            percentageChange : temp.informalBuyChangePercentage,
+            percentageChange : temp.informalBuyChangePercentage.split('%')[0],
 
             
           });
@@ -210,7 +225,7 @@ const HomePage: React.FC = () => {
             officialbuyValue: temp.officialbuyValue,
             officialsellValue: temp.officialsellValue,
             isPositive: temp.officialbuyValue > 0,
-            percentageChange:temp.officalBuyChangePercentage
+            percentageChange:temp.officalBuyChangePercentage.split('%')[0]
            
           });
         
@@ -305,6 +320,16 @@ const HomePage: React.FC = () => {
           fetchDlBondsData(),
         ]);
 
+        if ( !tokenData || !bondsData || !rateData || !oilData || !argBondsData || !dlBondsData) {
+          messageApi.open({
+            key,
+            type: 'error',
+            content: 'Failed to fetch data please reload the site !',
+            duration: 5,
+          });
+          throw new Error("Data fetching failed");
+        }
+
         setStocks(tokenData);
         setBonds(bondsData);
         setRate(rateData);
@@ -317,24 +342,34 @@ const HomePage: React.FC = () => {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false); 
+        messageApi.open({
+          key,
+          type: 'success',
+          content: 'Loaded!',
+          duration: 2,
+        });
       }
     };
 
     fetchData();
-  }, []);
+  }, [loading]);
 
   return (
     <>
     {contextHolder}
       <div style={{ padding: "20px" }}>
       {/* <Spin spinning={loading}> */}
+      
+      
+      <Space>
+
+        <Button onClick={reloading} style={{ margin : "20px", padding : "20px" }} > <ReloadOutlined /> Reload</Button>
+        
+      </Space>
+
+      
         <Row gutter={[16, 16]}>
         
-      <Space>
-        <Button onClick={success}>Success</Button>
-        {/* <Button onClick={error}>Error</Button>
-        <Button onClick={warning}>Warning</Button> */}
-      </Space>
 
 
           {stocks.map((stock, index) => (
@@ -393,7 +428,7 @@ const HomePage: React.FC = () => {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns} />
+            <Table dataSource={crude} columns={crudeColumns}   pagination={false}/>
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>

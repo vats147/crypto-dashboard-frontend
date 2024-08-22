@@ -199,7 +199,8 @@ const HomePage: React.FC = () => {
             informalbuyValue: temp.informalbuyValue,
             informalsellValue: temp.informalsellValue,
             isPositive: temp.informalbuyValue > 0,
-    
+            percentageChange : temp.informalBuyChangePercentage,
+
             
           });
     
@@ -208,6 +209,8 @@ const HomePage: React.FC = () => {
             logo: "",
             officialbuyValue: temp.officialbuyValue,
             officialsellValue: temp.officialsellValue,
+            isPositive: temp.officialbuyValue > 0,
+            percentageChange:temp.officalBuyChangePercentage
            
           });
         

@@ -77,7 +77,7 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
-            {volume}
+            ${volume}
           </Col>
         </Row>
       )}

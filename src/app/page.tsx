@@ -26,6 +26,8 @@ interface StockData {
   informalsellValue?: string;
   officialbuyValue?: string;
   officialsellValue?: string;
+  currentValue?:string;
+  
 }
 interface bondsData {
   shortName: string;
@@ -217,9 +219,9 @@ const HomePage: React.FC = () => {
           price_24h: currentValue.price_24h,
         };
       });
-      let temp={};
+      
 
-      temp = await fetchRateData();
+      let temp = await fetchRateData() as any;;
       console.log("temp if " ,temp)
 
           returnArray.push({

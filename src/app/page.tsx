@@ -27,6 +27,8 @@ interface StockData {
   officialbuyValue?: string;
   officialsellValue?: string;
   currentValue?:string;
+  lastUpdated: string;
+  sourceLink: string;
   
 }
 interface bondsData {
@@ -210,6 +212,7 @@ async function getCryptoData() {
             isPositive: data.price_change_percentage_24h >= 0,
             volume: data.market_cap,
             price_24h: data.price_change_24h,
+            sourceLink : "https://www.coingecko.com/en/coins/"+data.id
           };
           }
         );
@@ -461,6 +464,7 @@ async function getCryptoData() {
                 informalsellValue={stock?.informalsellValue ?? ""}
                 officialbuyValue={stock?.officialbuyValue ?? ""}
                 officialsellValue={stock?.officialsellValue ?? ""}
+                sourceLink = {stock?.sourceLink}
                 
               />
 
@@ -475,7 +479,7 @@ async function getCryptoData() {
 
         <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}/>
+            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold' }}>US BONDS</div>} />
 
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -500,7 +504,7 @@ async function getCryptoData() {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}/>
+            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold', textAlign:"center" }}>Crude Oil Data</div>} />
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Row, Col } from 'antd';
-import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, ArrowDownOutlined, ExportOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 
 interface StockCardProps {
@@ -15,7 +15,8 @@ interface StockCardProps {
   officialbuyValue: string;
   officialsellValue: string;
   price_24h: string;
-
+  lastUpdated: string;
+  sourceLink: string;
 }
 
 const StockCard: React.FC<StockCardProps> = ({
@@ -29,9 +30,11 @@ const StockCard: React.FC<StockCardProps> = ({
   informalsellValue,
   officialbuyValue,
   officialsellValue,
+  lastUpdated,
+  sourceLink,
 }) => {
   return (
-    <Card style={{ borderRadius: '10px', textAlign: 'left' }}>
+    <Card style={{ borderRadius: '10px', textAlign: 'left', position: 'relative' }}>
       <Row justify="center" align="middle">
         {logo && (
           <Col span={12}>
@@ -53,11 +56,12 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray' }}>Current Value</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: isPositive ? 'green' : 'red', fontWeight: 'bold' }}>
-            <h2 style={{ margin: 0, fontWeight: 'bold' }}> ${parseFloat(currentValue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+            <h2 style={{ margin: 0, fontWeight: 'bold' }}>${parseFloat(currentValue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
           </Col>
         </Row>
       )}
-       {informalbuyValue && (
+
+      {informalbuyValue && (
         <Row justify="space-between" align="middle">
           <Col span={12} style={{ textAlign: 'left' }}>
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Informal Buy</p>
@@ -120,12 +124,39 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
-          ${parseFloat(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ${parseFloat(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </Col>
         </Row>
       )}
 
-     
+      {lastUpdated && (
+        <Row justify="space-between" align="middle">
+          <Col span={12} style={{ textAlign: 'left' }}>
+            <p style={{ fontSize: '14px', color: 'gray' }}>Last Updated</p>
+          </Col>
+          <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
+            {lastUpdated}
+          </Col>
+        </Row>
+      )}
+
+      {sourceLink && (
+        <a
+          href={sourceLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            color: '#1890ff',
+            fontWeight: 'bold',
+          }}
+        >
+          <ExportOutlined />
+         
+        </a>
+      )}
     </Card>
   );
 };

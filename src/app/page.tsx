@@ -5,6 +5,7 @@ import StockCard from "@/components/StockCard";
 import { Row, Col, Spin, Table, message, Button, Space } from "antd";
 import {
   ReloadOutlined,
+  ExportOutlined
 } from '@ant-design/icons';
 
 import { parse } from "node-html-parser";
@@ -479,7 +480,18 @@ async function getCryptoData() {
 
         <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold' }}>US BONDS</div>} />
+            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}  title={() =>
+              <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
+        US BONDS
+        <a 
+          href="https://example.com"  // Replace with your actual source link
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ position: 'absolute', top: 0, right: 0 }}
+        >
+          <ExportOutlined />
+        </a>
+      </div>} />
 
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -504,7 +516,18 @@ async function getCryptoData() {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold', textAlign:"center" }}>Crude Oil Data</div>} />
+            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}  title={() => 
+              <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
+              Crude Oil Data
+              <a 
+                href="https://example.com"  // Replace with your actual source link
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ position: 'absolute', top: 0, right: 0 }}
+              >
+                <ExportOutlined />
+              </a>
+            </div>} />
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>

@@ -257,6 +257,7 @@ async function getCryptoData() {
             ).toFixed(2)
           ),
           price_24h: currentValue.price_24h,
+          sourceLink:"https://stats.balanced.network/"
         };
       });
 
@@ -273,7 +274,7 @@ async function getCryptoData() {
             informalsellValue: temp.informalsellValue,
             isPositive: temp.informalbuyValue > 0,
             percentageChange : temp.informalBuyChangePercentage.split('%')[0],
-
+            sourceLink:"https://bluedollar.net/"
             
           });
     
@@ -283,8 +284,8 @@ async function getCryptoData() {
             officialbuyValue: temp.officialbuyValue,
             officialsellValue: temp.officialsellValue,
             isPositive: temp.officialbuyValue > 0,
-            percentageChange:temp.officalBuyChangePercentage.split('%')[0]
-           
+            percentageChange:temp.officalBuyChangePercentage.split('%')[0],
+           sourceLink:"https://bluedollar.net/"
           });
         
        temp = await fetchArgBondsData();
@@ -293,7 +294,8 @@ async function getCryptoData() {
         logo: "",
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
-        isPositive: temp.percentageChange.startsWith('+') ? true : false
+        isPositive: temp.percentageChange.startsWith('+') ? true : false,
+        sourceLink:"https://bluedollar.net/"
        
       });
       
@@ -303,7 +305,8 @@ async function getCryptoData() {
         logo: "",
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
-        isPositive: temp.percentageChange.startsWith('+') ? true : false
+        isPositive: temp.percentageChange.startsWith('+') ? true : false,
+        sourceLink:"https://bluedollar.net/"
        
       });
       console.log(returnArray);
@@ -484,7 +487,7 @@ async function getCryptoData() {
               <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
         US BONDS
         <a 
-          href="https://example.com"  // Replace with your actual source link
+          href="https://www.cnbc.com/bonds/"  // Replace with your actual source link
           target="_blank" 
           rel="noopener noreferrer"
           style={{ position: 'absolute', top: 0, right: 0 }}
@@ -520,7 +523,7 @@ async function getCryptoData() {
               <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
               Crude Oil Data
               <a 
-                href="https://example.com"  // Replace with your actual source link
+                href="https://oilprice.com/oil-price-charts/"  // Replace with your actual source link
                 target="_blank" 
                 rel="noopener noreferrer"
                 style={{ position: 'absolute', top: 0, right: 0 }}

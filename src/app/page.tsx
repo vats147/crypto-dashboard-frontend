@@ -468,8 +468,8 @@ async function getCryptoData() {
                 informalsellValue={stock?.informalsellValue ?? ""}
                 officialbuyValue={stock?.officialbuyValue ?? ""}
                 officialsellValue={stock?.officialsellValue ?? ""}
-                sourceLink = {stock?.sourceLink}
-                
+                sourceLink = {stock?.sourceLink ?? ""} 
+                lastUpdated={stock?.lastUpdated}  
               />
 
             

@@ -203,7 +203,9 @@ async function getCryptoData() {
                 sparkline: false
             }
         });
-
+        if(response.status !==  200){
+          errorMessage("Failed to fetch BTC, ETH, ICX Data");
+        }
         const returnArray = response.data.map((data : any) => {
           return {
             symbol: data.symbol,

@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
     },
   ];
 
-  const filteredData = ["BTC", "ICX", "ETH", "BALN"];
+  const filteredData = ["BALN"];
   const returnArray: ReturnObj[] = [];
 
   function processData(data: Data): void {
@@ -187,6 +187,42 @@ const HomePage: React.FC = () => {
     });
   }
 
+
+async function getCryptoData() {
+    try {
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+            params: {
+                vs_currency: 'usd',
+                ids: 'bitcoin,ethereum,icon',
+                order: 'market_cap_desc',
+                per_page: 3,
+                page: 1,
+                sparkline: false
+            }
+        });
+
+        const returnArray = response.data.map((data : any) => {
+          return {
+            symbol: data.symbol,
+            logo: data.image,
+            price: data.current_price,
+            percentageChange: data.price_change_percentage_24h,
+            isPositive: data.price_change_percentage_24h >= 0,
+            volume: data.market_cap,
+            price_24h: data.price_change_24h,
+          };
+          }
+        );
+
+        console.log("return get crypto data", returnArray);
+        return returnArray;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+
+
   useEffect(() => {
     const fetchTokenData = async (): Promise<StockData[]> => {
       const response = await fetch(
@@ -219,6 +255,8 @@ const HomePage: React.FC = () => {
           price_24h: currentValue.price_24h,
         };
       });
+
+      returnArray.push(...await getCryptoData());
       
 
       let temp = await fetchRateData() as any;;

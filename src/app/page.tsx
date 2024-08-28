@@ -13,22 +13,23 @@ import SellBuyCard from "@/components/card";
 import Column from "antd/es/table/Column";
 // let baseurl = process.env.baseurl;
 let baseurl = "https://connor-crypto-backend.vercel.app";
+// let baseurl = "http://localhost:3001";
 
 interface StockData {
-  symbol: string;
-  logo: string;
-  percentageChange: number;
-  isPositive: boolean;
-  volume: number;
-  price_24h: string;
-  price: string;
+  symbol?: string;
+  logo?: string;
+  percentageChange?: number;
+  isPositive?: boolean;
+  volume?: number;
+  price_24h?: string;
+  price?: string;
   informalbuyValue?: string;  // Add optional properties
   informalsellValue?: string;
   officialbuyValue?: string;
   officialsellValue?: string;
   currentValue?:string;
-  lastUpdated: string;
-  sourceLink: string;
+  lastUpdated?: string;
+  sourceLink?: string;
   
 }
 interface bondsData {
@@ -80,6 +81,7 @@ const HomePage: React.FC = () => {
   const [dlBonds, setDlBonds] = useState<bondsData[]>([]);
   const [loading, setLoading] = useState(true); // Loading state
   const [messageApi, contextHolder] = message.useMessage();
+  const [vix,setVix] =useState<StockData[]>([]);
   const key = 'updatable';
   const bondcolumns = [
     {
@@ -121,7 +123,7 @@ const HomePage: React.FC = () => {
       ),
     },
     {
-      title: "% Change",
+      title: "%Change",
       dataIndex: "change_percent",
       key: "change_percent",
       render: (text: number) => (
@@ -305,6 +307,9 @@ async function getCryptoData() {
         isPositive: temp.percentageChange.startsWith('+') ? true : false
        
       });
+      temp = await fetchVixData();
+      returnArray.push(temp)
+
       console.log(returnArray);
       
       return returnArray;
@@ -373,7 +378,17 @@ async function getCryptoData() {
       return response;
     };
     
+    const fetchVixData = async (): Promise<StockData[]> => {
 
+      let data = await fetch(`${baseurl}/api/vix`);
+      let response = await data.json();
+      if(data.status !==  200){
+        errorMessage("Failed to Vix Data");
+      }
+
+
+      return response;
+    }
     const fetchData = async () => {
       try {
         const [
@@ -451,21 +466,21 @@ async function getCryptoData() {
           {stocks.map((stock, index) => (
             <Col key={index} xs={24} sm={12} md={8} lg={6} xl={6}>
               <StockCard
-                symbol={stock?.symbol}
-                logo={stock?.logo}
+                symbol={(stock?.symbol )?? ""}
+                logo={(stock?.logo) ?? ""}
                 
                 currentValue={(stock?.price ?? stock?.currentValue) ?? ""}
 
-                percentageChange={stock?.percentageChange?.toString()} // Convert number to string for display
-                isPositive={stock?.isPositive}
-                volume={stock?.volume?.toString()}
-                price_24h={stock?.price_24h}
+                percentageChange={(stock?.percentageChange?.toString()) ?? ""} // Convert number to string for display
+                isPositive={(stock?.isPositive) ?? true}
+                volume={(stock?.volume?.toString()) ?? ""}
+                price_24h={(stock?.price_24h) ?? ""}
                 informalbuyValue={stock?.informalbuyValue ?? ""}
                 informalsellValue={stock?.informalsellValue ?? ""}
                 officialbuyValue={stock?.officialbuyValue ?? ""}
                 officialsellValue={stock?.officialsellValue ?? ""}
-                sourceLink = {stock?.sourceLink}
-                
+                sourceLink = {(stock?.sourceLink) ?? ""}
+                lastUpdated = { (stock?.lastUpdated) ?? ""}
               />
 
             
@@ -504,7 +519,7 @@ async function getCryptoData() {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold', textAlign:"center" }}>Crude Oil Data</div>} />
+            <Table dataSource={crude} columns={crudeColumns} style={{ overflow: 'auto' }}   pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold', textAlign:"center" }}>Crude Oil Data</div>} />
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>

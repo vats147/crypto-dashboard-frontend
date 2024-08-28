@@ -112,7 +112,7 @@ const StockCard: React.FC<StockCardProps> = ({
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: isPositive ? 'green' : 'red', fontWeight: 'bold' }}>
             <h3 style={{ margin: 0, fontWeight: 'bold' }}>
-              {isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {percentageChange}%
+              {isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {parseFloat(percentageChange).toFixed(2)}%
             </h3>
           </Col>
         </Row>
@@ -124,7 +124,7 @@ const StockCard: React.FC<StockCardProps> = ({
             <p style={{ fontSize: '14px', color: 'gray', fontWeight: 'bold' }}>Market Cap</p>
           </Col>
           <Col span={12} style={{ textAlign: 'right', color: 'black', fontWeight: 'bold' }}>
-            ${parseFloat(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ${parseInt(volume).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).split('.')[0]}
           </Col>
         </Row>
       )}

@@ -5,6 +5,7 @@ import StockCard from "@/components/StockCard";
 import { Row, Col, Spin, Table, message, Button, Space } from "antd";
 import {
   ReloadOutlined,
+  ExportOutlined
 } from '@ant-design/icons';
 
 import { parse } from "node-html-parser";
@@ -29,7 +30,7 @@ interface StockData {
   officialsellValue?: string;
   currentValue?:string;
   lastUpdated?: string;
-  sourceLink?: string;
+  sourceLink: string;
   
 }
 interface bondsData {
@@ -258,6 +259,7 @@ async function getCryptoData() {
             ).toFixed(2)
           ),
           price_24h: currentValue.price_24h,
+          sourceLink:"https://stats.balanced.network/"
         };
       });
 
@@ -268,13 +270,13 @@ async function getCryptoData() {
       console.log("temp if " ,temp)
 
           returnArray.push({
-            symbol: "Argentinian Peso - Informal Rate",
+            symbol: "Argentinian Peso ss- Informal Rate",
             logo: "",
             informalbuyValue: temp.informalbuyValue,
             informalsellValue: temp.informalsellValue,
             isPositive: temp.informalbuyValue > 0,
             percentageChange : temp.informalBuyChangePercentage.split('%')[0],
-
+            sourceLink:"https://bluedollar.net/"
             
           });
     
@@ -284,8 +286,8 @@ async function getCryptoData() {
             officialbuyValue: temp.officialbuyValue,
             officialsellValue: temp.officialsellValue,
             isPositive: temp.officialbuyValue > 0,
-            percentageChange:temp.officalBuyChangePercentage.split('%')[0]
-           
+            percentageChange:temp.officalBuyChangePercentage.split('%')[0],
+            sourceLink:"https://bluedollar.net/"
           });
         
        temp = await fetchArgBondsData();
@@ -294,8 +296,8 @@ async function getCryptoData() {
         logo: "",
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
-        isPositive: temp.percentageChange.startsWith('+') ? true : false
-       
+        isPositive: temp.percentageChange.startsWith('+') ? true : false,
+        sourceLink:"https://www.tradingview.com/symbols/TRADEGATE-US40114HS2/"
       });
       
        temp = await fetchDlBondsData();
@@ -304,8 +306,8 @@ async function getCryptoData() {
         logo: "",
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
-        isPositive: temp.percentageChange.startsWith('+') ? true : false
-       
+        isPositive: temp.percentageChange.startsWith('+') ? true : false,
+        sourceLink:"https://www.tradingview.com/symbols/LUXSE-US040114HV54/"
       });
       temp = await fetchVixData();
       returnArray.push(temp)
@@ -479,7 +481,7 @@ async function getCryptoData() {
                 informalsellValue={stock?.informalsellValue ?? ""}
                 officialbuyValue={stock?.officialbuyValue ?? ""}
                 officialsellValue={stock?.officialsellValue ?? ""}
-                sourceLink = {(stock?.sourceLink) ?? ""}
+                sourceLink = {(stock?.sourceLink) }
                 lastUpdated = { (stock?.lastUpdated) ?? ""}
               />
 
@@ -494,7 +496,19 @@ async function getCryptoData() {
 
         <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold' }}>US BONDS</div>} />
+          <Table dataSource={bonds} columns={bondcolumns} pagination={false}  loading={loading}  title={() =>
+              <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
+        US BONDS
+        <a 
+          href="https://example.com"  // Replace with your actual source link
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ position: 'absolute', top: 0, right: 0 }}
+        >
+          <ExportOutlined />
+        </a>
+      </div>} />
+           
 
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -519,7 +533,19 @@ async function getCryptoData() {
           </Col> */}
 
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-            <Table dataSource={crude} columns={crudeColumns} style={{ overflow: 'auto' }}   pagination={false}  loading={loading}  title={() => <div style={{ fontWeight: 'bold', textAlign:"center" }}>Crude Oil Data</div>} />
+            
+            <Table dataSource={crude} columns={crudeColumns}   pagination={false}  loading={loading}  title={() => 
+              <div style={{ fontWeight: 'bold', textAlign: 'center', position: 'relative' }}>
+              Crude Oil Data
+              <a 
+                href="https://example.com"  // Replace with your actual source link
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ position: 'absolute', top: 0, right: 0 }}
+              >
+                <ExportOutlined />
+              </a>
+            </div>} />
           </Col>
           {/* <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <SellBuyCard title={argBonds.title} currentValue={argBonds.value} percentageChange = {argBonds.percentageChange}/>

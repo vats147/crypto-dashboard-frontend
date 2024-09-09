@@ -242,8 +242,7 @@ async function getCryptoData() {
       );
 
       const returnArray = res.map((currentValue: any) => {
-        const percentageChange =
-          (currentValue.price * 100) / currentValue.price_24h - 100;
+        const percentageChange = (currentValue.price * 100) / currentValue.price_24h - 100;
         const isPositive = percentageChange >= 0;
         
         return {
@@ -297,7 +296,7 @@ async function getCryptoData() {
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
         isPositive: temp.percentageChange.startsWith('+') ? true : false,
-        sourceLink:"https://www.tradingview.com/symbols/TRADEGATE-US40114HS2/"
+        sourceLink:"https://www.cnbc.com/bonds/"
       });
       
        temp = await fetchDlBondsData();
@@ -307,7 +306,7 @@ async function getCryptoData() {
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
         isPositive: temp.percentageChange.startsWith('+') ? true : false,
-        sourceLink:"https://www.tradingview.com/symbols/LUXSE-US040114HV54/"
+        sourceLink:"https://www.cnbc.com/bonds/"
       });
       temp = await fetchVixData();
       returnArray.push(temp)

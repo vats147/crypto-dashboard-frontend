@@ -296,7 +296,7 @@ async function getCryptoData() {
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
         isPositive: temp.percentageChange.startsWith('+') ? true : false,
-        sourceLink:"https://www.cnbc.com/bonds/"
+        sourceLink:"https://markets.businessinsider.com/bonds/argentinien-_republikdl-bonds_202024-30-bond-2030-ararge3209s6?miRedirects=1"
       });
       
        temp = await fetchDlBondsData();
@@ -306,7 +306,7 @@ async function getCryptoData() {
         currentValue: temp.value,
         percentageChange: temp.percentageChange.split('%')[0],
         isPositive: temp.percentageChange.startsWith('+') ? true : false,
-        sourceLink:"https://www.cnbc.com/bonds/"
+        sourceLink:"https://markets.businessinsider.com/bonds/dl-bonds_202020-28-41-bond-2041-ararge3209v0?miRedirects=1"
       });
       temp = await fetchVixData();
       returnArray.push(temp)
